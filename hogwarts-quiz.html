@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hogwarts House Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffe6f2; /* Light pink background */
+            text-align: center;
+        }
+        .quiz-container {
+            margin: 50px auto;
+            padding: 20px;
+            max-width: 600px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #d1a0ff; /* Light purple */
+        }
+        .quiz-image {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 20px;
+            display: block;
+        }
+        .result-image {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .result-message {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        .result-house {
+            font-weight: bold;
+            color: #c68aff; /* Purple */
+        }
+        button {
+            background-color: #c68aff; /* Purple */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #a864d9; /* Darker purple */
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>Hogwarts House Quiz</h1>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQI8iQu0XS4Fk2sTH8qLAOvd2XzFd-BomWKg&s" alt="Hogwarts Houses" class="quiz-image">
+    <div id="quiz"></div>
+    <button onclick="submitQuiz()">Submit</button>
+    <div id="quiz-result" style="display: none;">
+        <img src="" alt="Result House Image" class="result-image" id="result-image">
+        <div class="result-message">Congratulations! You belong to <span id="result-house"></span> house.</div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            question: "What trait do you value the most?",
+            options: {
+                a: "Courage",
+                b: "Ambition",
+                c: "Intelligence",
+                d: "Loyalty"
+            },
+            scores: {
+                a: "Gryffindor",
+                b: "Slytherin",
+                c: "Ravenclaw",
+                d: "Hufflepuff"
+            }
+        },
+        {
+            question: "Which of these would you most hate people to call you?",
+            options: {
+                a: "Cowardly",
+                b: "Ordinary",
+                c: "Ignorant",
+                d: "Selfish"
+            },
+            scores: {
+                a: "Gryffindor",
+                b: "Hufflepuff",
+                c: "Ravenclaw",
+                d: "Slytherin"
+            }
+        },
+        {
+            question: "What is your favorite class at Hogwarts?",
+            options: {
+                a: "Defense Against the Dark Arts",
+                b: "Potions",
+                c: "Charms",
+                d: "Herbology"
+            },
+            scores: {
+                a: "Gryffindor",
+                b: "Slytherin",
+                c: "Ravenclaw",
+                d: "Hufflepuff"
+            }
+        },
+        {
+            question: "Which magical creature do you find most fascinating?",
+            options: {
+                a: "Phoenix",
+                b: "Basilisk",
+                c: "Hippogriff",
+                d: "House-elf"
+            },
+            scores: {
+                a: "Gryffindor",
+                b: "Slytherin",
+                c: "Ravenclaw",
+                d: "Hufflepuff"
+            }
+        }
+    ];
+
+    function loadQuiz() {
+        const quizContainer = document.getElementById('quiz');
+        quizContainer.innerHTML = questions.map((q, index) => `
+            <div class="question">
+                <h3>${q.question}</h3>
+                <div class="options">
+                    ${Object.keys(q.options).map(key => `
+                        <label>
+                            <input type="radio" name="question${index}" value="${key}">
+                            ${q.options[key]}
+                        </label>
+                    `).join('')}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function submitQuiz() {
+        const answers = [];
+        questions.forEach((q, index) => {
+            const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+            if (selectedOption) {
+                answers.push(q.scores[selectedOption.value]);
+            }
+        });
+
+        if (answers.length !== questions.length) {
+            alert("Please answer all questions.");
+            return;
+        }
+
+        const houseCounts = answers.reduce((acc, house) => {
+            acc[house] = (acc[house] || 0) + 1;
+            return acc;
+        }, {});
+
+        const sortedHouses = Object.keys(houseCounts).sort((a, b) => houseCounts[b] - houseCounts[a]);
+        const resultHouse = sortedHouses[0];
+
+        showResult(resultHouse);
+    }
+
+    function showResult(resultHouse) {
+        const quizContainer = document.getElementById('quiz-container');
+        const quizResult = document.getElementById('quiz-result');
+        const resultImage = document.getElementById('result-image');
+        const resultMessage = document.getElementById('result-house');
+
+        // Set result image and message based on the resultHouse
+        switch (resultHouse) {
+            case "Gryffindor":
+                resultImage.src = "https://via.placeholder.com/150/FF6347/FFFFFF?text=G";
+                break;
+            case "Slytherin":
+                resultImage.src = "https://via.placeholder.com/150/008000/FFFFFF?text=S";
+                break;
+            case "Ravenclaw":
+                resultImage.src = "https://via.placeholder.com/150/87CEEB/FFFFFF?text=R";
+                break;
+            case "Hufflepuff":
+                resultImage.src = "https://via.placeholder.com/150/FFD700/000000?text=H";
+                break;
+            default:
+                resultImage.src = "https://via.placeholder.com/150";
+        }
+
+        resultMessage.textContent = resultHouse;
+        quizResult.style.display = 'block';
+        quizContainer.style.display = 'none';
+    }
+
+    loadQuiz();
+</script>
+
+</body>
+</html>
