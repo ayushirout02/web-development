@@ -135,6 +135,14 @@
         }
     ];
 
+    // Tags assigned to each Hogwarts house based on their traits
+    const houseTags = {
+        Gryffindor: ["Maroon", "Warm", "Bold", "Red", "Gold","Denim","Leather","Ruby"],
+        Slytherin: ["Silky", "Black", "Glossy", "Green", "Silver","Classy","Flowy","Sequin","Blazer","Leather","Emerald"],
+        Ravenclaw: ["Coat", "Linen", "Crisp", "Blue", "Bronze","Sequin","Blazer","Grey","Teal","Sapphire"],
+        Hufflepuff: ["Sundress", "Jumpers", "Cotton", "Yellow", "Black","Floral","Cardigan","Pink","Orange"]
+    };
+
     function loadQuiz() {
         const quizContainer = document.getElementById('quiz');
         quizContainer.innerHTML = questions.map((q, index) => `
@@ -186,22 +194,24 @@
         // Set result image and message based on the resultHouse
         switch (resultHouse) {
             case "Gryffindor":
-                resultImage.src = "https://via.placeholder.com/150/FF6347/FFFFFF?text=G";
+                resultImage.src = "https://c4.wallpaperflare.com/wallpaper/672/923/822/harry-potter-gryffindor-wallpaper-preview.jpg";
                 break;
             case "Slytherin":
-                resultImage.src = "https://via.placeholder.com/150/008000/FFFFFF?text=S";
+                resultImage.src = "https://w0.peakpx.com/wallpaper/675/385/HD-wallpaper-slytherin-logo-in-forest-green-background-slytherin.jpg";
                 break;
             case "Ravenclaw":
-                resultImage.src = "https://via.placeholder.com/150/87CEEB/FFFFFF?text=R";
+                resultImage.src = "https://i.pinimg.com/564x/00/4a/1c/004a1c19a8cf6fb41bb3bddd6caef647.jpg";
                 break;
             case "Hufflepuff":
-                resultImage.src = "https://via.placeholder.com/150/FFD700/000000?text=H";
+                resultImage.src = "https://m.media-amazon.com/images/I/71yfiyuhurL._AC_UF894,1000_QL80_.jpg";
                 break;
             default:
                 resultImage.src = "https://via.placeholder.com/150";
         }
 
-        resultMessage.textContent = resultHouse;
+        // Display result message
+        resultMessage.textContent = `Congratulations! You belong to ${resultHouse}`;
+
         quizResult.style.display = 'block';
         quizContainer.style.display = 'none';
     }
@@ -211,3 +221,5 @@
 
 </body>
 </html>
+
+
